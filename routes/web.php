@@ -1,8 +1,9 @@
 <?php
 
+use App\Livewire\Pages\Home\HomePage;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', HomePage::class);
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

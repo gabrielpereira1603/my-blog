@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - develop
+name: Deploy Dev - Homologação
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.seuservidor.com.br
+          username: seu_usuario
+          password: sua_senha
+          server-dir: public_html/homologacao/

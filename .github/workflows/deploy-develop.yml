@@ -13,7 +13,7 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.seuservidor.com.br
-          username: seu_usuario
-          password: sua_senha
-          server-dir: public_html/homologacao/
+          server: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: articlehub-homologacao.somosdevteam.com

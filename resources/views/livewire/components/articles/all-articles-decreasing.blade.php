@@ -1,9 +1,9 @@
-<div class="overflow-y-hidden px-4 py-6 max-w-7xl mx-auto">
+<div class="overflow-y-hidden px-4 py-1 max-w-7xl mx-auto">
     <input
         type="text"
         wire:model.live.debounce.300ms="search"
         placeholder="Pesquisar artigos..."
-        class="mb-6 px-4 py-2 border border-gray-300 rounded-lg w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+        class="mb-6 px-4 py-2 border border-[#14B8A6] rounded-lg w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-[#14B8A6]">
 
     <div class="flex justify-end mb-6">
         <button wire:click="toggleOrder"

@@ -14,6 +14,39 @@ new class extends Component {
     }
 };
 ?>
+@php
+    $menuSections = [
+        [
+            'label' => 'Navegação',
+            'icon' => '', // Exemplo: 'menu-icon'
+            'items' => [
+                ['label' => 'Início', 'href' => ''],
+                ['label' => 'Novidades', 'href' => ''],
+                ['label' => 'Artigos', 'href' => ''],
+                ['label' => 'Top 10', 'href' => ''],
+            ]
+        ],
+        [
+            'label' => 'Conta',
+            'icon' => '', // Exemplo: 'user-icon'
+            'items' => [
+                ['label' => 'Login', 'href' => ''],
+                ['label' => 'Criar Conta', 'href' => ''],
+            ]
+        ],
+        [
+            'label' => 'Categorias',
+            'icon' => '', // Exemplo: 'category-icon'
+            'items' => [
+                ['label' => 'Inteligência Artificial', 'href' => ''],
+                ['label' => 'Desenvolvimento Web', 'href' => ''],
+                ['label' => 'Mobile', 'href' => ''],
+                ['label' => 'DevOps', 'href' => ''],
+                ['label' => 'Cloud', 'href' => ''],
+            ]
+        ],
+    ];
+@endphp
 
 <nav x-data="{ open: false }" class="bg-white border-b border-[#1F2937] fixed top-0 left-0 w-full z-50 shadow-md">
     @if (Auth::check())
@@ -42,11 +75,17 @@ new class extends Component {
             </div>
         </div>
     @else
+
         <div class="max-w-7xl p-5 mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center relative">
-                <!-- Menu Mobile -->
-                <button @click="open = true" class="sm:hidden text-[#1F2937] focus:outline-none">
-                    ☰
+
+                <button @click="open = !open" class="sm:hidden text-[#1F2937] focus:outline-none">
+                    <template x-if="!open">
+                        <span>☰</span>
+                    </template>
+                    <template x-if="open">
+                        <span>✕</span>
+                    </template>
                 </button>
 
                 <!-- Logo centralizada para telas pequenas -->
@@ -60,7 +99,6 @@ new class extends Component {
                 <div class="hidden sm:flex flex-1 justify-center transform -translate-x-1/2">
                     <ul class="flex items-center text-center gap-5">
                         <li><a href="#"><x-instagram-icon widht="20px" height="20px" color="#1F2937"/></a></li>
-                        <li><a href="#"><x-whatsapp-icon widht="20px" height="20px" color="#1F2937"/></a></li>
                     </ul>
                 </div>
 
@@ -94,14 +132,33 @@ new class extends Component {
     @endif
 
     <!-- Menu Mobile Tela Cheia -->
-    <div x-show="open" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center text-[#1F2937] text-xl space-y-6">
-        <button @click="open = false" class="absolute top-5 right-5 text-3xl">✕</button>
-        <ul class="text-center space-y-4">
-            <li><a href="#">Início</a></li>
-            <li><a href="#">Novidades</a></li>
-            <li><a href="#">Artigos</a></li>
-            <li><a href="#">Login</a></li>
-            <li><a href="#">Criar Conta</a></li>
-        </ul>
+    <div x-show="open" x-transition class="sm:hidden bg-[#F9FAFB] dark:bg-[#1E293B] border-l-4 border-[#14B8A6] px-4 py-6 shadow-md relative z-50">
+        @foreach ($menuSections as $section)
+            <div class="mb-4">
+                <p class="flex items-center gap-2 text-[#1F2937] dark:text-[#F8FAFC] font-semibold mb-2">
+                    @if (!empty($section['icon']))
+                        <x-dynamic-component :component="$section['icon']" width="20px" height="20px" color="currentColor" />
+                    @endif
+                    {{ $section['label'] }}
+                </p>
+
+                <ul class="space-y-2 pl-4 border-l-2 border-[#14B8A6]">
+                    @foreach ($section['items'] as $item)
+                        <li>
+                            <a href="{{ $item['href'] }}"
+                               class="block text-[#1F2937] dark:text-[#F8FAFC] hover:text-[#F8FAFC] transition duration-150">
+                                {{ $item['label'] }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endforeach
+
+        <div class="mt-6">
+            <button class="w-full bg-[#14B8A6] p-3 rounded-md hover:bg-gray-600 transition-colors duration-200">
+                <p class="text-center text-white font-bold">Junte-se a nós</p>
+            </button>
+        </div>
     </div>
 </nav>

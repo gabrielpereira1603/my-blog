@@ -31,7 +31,11 @@
         </div>
     </div>
 
-    <div class="mt-6">
+    <div class="">
+        <livewire:components.articles.categories-articles/>
+    </div>
+
+    <div class="">
         <livewire:components.articles.all-articles-decreasing/>
     </div>
 </section>

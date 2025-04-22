@@ -1,4 +1,4 @@
-<section class="w-full bg-white">
+<section class="w-full bg-white overflow-y-hidden">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
         {{-- Coluna esquerda: artigos 1 e 2 lado a lado --}}
         <div class="lg:col-span-2 grid grid-cols-2">
@@ -29,5 +29,9 @@
                 </a>
             @endforeach
         </div>
+    </div>
+
+    <div class="mt-6">
+        <livewire:components.articles.all-articles-decreasing/>
     </div>
 </section>

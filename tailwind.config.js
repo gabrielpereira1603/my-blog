@@ -15,6 +15,15 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 inter: ['Inter', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                primary: {
+                    600: '#2563eb',
+                    700: '#1d4ed8',
+                },
+                secondary: {
+                    900: '#8B5CF6',
+                }
+            }
         },
     },
 

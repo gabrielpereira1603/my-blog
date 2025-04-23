@@ -25,12 +25,24 @@
         placeholder="Pesquisar artigos..."
         class="mb-6 mt-4 px-4 py-2 border border-[#14B8A6] rounded-lg w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-[#14B8A6]">
 
-    <div class="flex justify-end mb-6">
+    <div class="flex justify-between mb-6">
+        @auth
+            @if(Auth::user()->developer)
+                <a href="{{ route('create.article') }}"
+                   class="flex items-center justify-center gap-2 px-4 py-2 bg-[#14B8A6] hover:bg-[#1F2937]/90 text-white text-sm font-semibold rounded-xl transition-colors shadow-md">
+                    Adicionar artigo
+                    <x-add-icon width="16px" height="16px" color="currentColor"/>
+                </a>
+            @endif
+        @endauth
+
         <button wire:click="toggleOrder"
-                class="px-4 py-2 bg-[#14B8A6] hover:bg-[#14B8A6]/90 text-white text-sm font-semibold rounded-xl transition-colors shadow-md">
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-[#14B8A6] hover:bg-[#14B8A6]/90 text-white text-sm font-semibold rounded-xl transition-colors shadow-md">
             Ordenar por: {{ $orderBy === 'desc' ? 'Mais recentes' : 'Mais antigos' }}
+            <x-order-by-icon width="16px" height="16px" color="currentColor"/>
         </button>
     </div>
+
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse ($articles as $article)
@@ -68,7 +80,7 @@
                             @endforeach
                         </div>
                     @endif
-                    <a href=""
+                    <a href="{{ route('view-one.article', $article->id) }}"
                        class="text-[#14B8A6] font-medium hover:underline mt-auto inline-block transition-colors">
                         Ver mais →
                     </a>

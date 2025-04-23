@@ -18,7 +18,7 @@ new class extends Component {
     $menuSections = [
         [
             'label' => 'Navegação',
-            'icon' => '', // Exemplo: 'menu-icon'
+            'icon' => '',
             'items' => [
                 ['label' => 'Início', 'href' => ''],
                 ['label' => 'Novidades', 'href' => ''],
@@ -28,7 +28,7 @@ new class extends Component {
         ],
         [
             'label' => 'Conta',
-            'icon' => '', // Exemplo: 'user-icon'
+            'icon' => '',
             'items' => [
                 ['label' => 'Login', 'href' => ''],
                 ['label' => 'Criar Conta', 'href' => ''],
@@ -36,7 +36,7 @@ new class extends Component {
         ],
         [
             'label' => 'Categorias',
-            'icon' => '', // Exemplo: 'category-icon'
+            'icon' => '',
             'items' => [
                 ['label' => 'Inteligência Artificial', 'href' => ''],
                 ['label' => 'Desenvolvimento Web', 'href' => ''],
@@ -59,7 +59,7 @@ new class extends Component {
 
                 <!-- Logo centralizada -->
                 <div class="w-full sm:w-1/3 flex justify-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <img src="{{ asset('/logos/logo-transparante.png') }}" alt="Logo transparente" width="100px"/>
                     </a>
                 </div>
@@ -90,7 +90,7 @@ new class extends Component {
 
                 <!-- Logo centralizada para telas pequenas -->
                 <div class="flex sm:hidden w-full justify-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <img src="{{ asset('/logos/logo-transparante.png') }}" alt="Logo transparente" width="100px"/>
                     </a>
                 </div>
@@ -104,7 +104,7 @@ new class extends Component {
 
                 <!-- Logo centralizada para telas grandes -->
                 <div class="hidden sm:flex w-1/3 justify-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <img src="{{ asset('/logos/logo-transparante.png') }}" alt="Logo transparente" width="100px"/>
                     </a>
                 </div>
@@ -113,9 +113,9 @@ new class extends Component {
                 <div class="hidden sm:flex w-1/3 justify-end">
                     <ul class="flex gap-5 text-black">
                         <li>
-                            <span>
+                            <a href="{{ route('login') }}">
                                 <x-user-icon widht="20px" height="20px" color="#1F2937"/>
-                            </span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -123,12 +123,14 @@ new class extends Component {
 
         </div>
 
-        <ul class="hidden bg-[#14B8A6] text-[#1F2937] uppercase font-bold sm:flex justify-around items-center text-center gap-5 p-6">
-            <li><a href="#">Início</a></li>
-            <li><a href="#">Novidades</a></li>
-            <li><a href="#">Artigos</a></li>
-            <li><a href="#">Top 10</a></li>
-        </ul>
+        @unless(Route::is('login', 'register'))
+            <ul class="hidden bg-[#14B8A6] text-[#1F2937] uppercase font-bold sm:flex justify-around items-center text-center gap-5 p-6">
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Novidades</a></li>
+                <li><a href="#">Artigos</a></li>
+                <li><a href="#">Top 10</a></li>
+            </ul>
+        @endunless
     @endif
 
     <!-- Menu Mobile Tela Cheia -->

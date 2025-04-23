@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Lucas Trabalon',
-            'email' => 'Lucas.trabalon@ceopag.com.br [administrator]',
+            'name' => 'Lucas Trabalon [administrator]',
+            'email' => 'Lucas.trabalon@ceopag.com.br',
             'password' => Hash::make('suanovasenha'),
             'role' => 'administrator',
         ]);

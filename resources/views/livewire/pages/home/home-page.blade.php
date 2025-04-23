@@ -1,11 +1,10 @@
-<section class="w-full bg-white overflow-y-hidden">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
-        {{-- Coluna esquerda: artigos 1 e 2 lado a lado --}}
+<section class="w-full overflow-y-hidden">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-0">
         <div class="lg:col-span-2 grid grid-cols-2">
             @foreach($articles->take(2) as $article)
                 <a href="" class="relative group aspect-video">
                     @if($article->cover_image)
-                        <img src="{{ asset('logos/logo-transparante.png') }}" alt="{{ $article->title }}" class="w-full h-full object-cover rounded-none">
+                        <img src="{{ $article->cover_image }}" alt="{{ $article->title }}" class="w-full h-full object-cover rounded-none">
                     @endif
                     <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
                         <h4 class="text-white text-xl font-semibold leading-tight">{{ $article->title }}</h4>
@@ -16,11 +15,11 @@
         </div>
 
         {{-- Coluna direita: artigos 3 e 4 empilhados --}}
-        <div class="grid grid-rows-2">
+        <div class="grid grid-rows-1">
             @foreach($articles->skip(2)->take(2) as $article)
-                <a href="" class="relative group aspect-[12/3]">
+                <a href="" class="relative group aspect-[11/3]">
                     @if($article->cover_image)
-                        <img src="{{ asset('logos/logo-transparante.png') }}" alt="{{ $article->title }}" class="w-full h-full object-cover rounded-none">
+                        <img src="{{ $article->cover_image }}" alt="{{ $article->title }}" class="w-full h-full object-cover rounded-none">
                     @endif
                     <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
                         <h4 class="text-white text-base font-semibold leading-tight">{{ $article->title }}</h4>
@@ -29,10 +28,6 @@
                 </a>
             @endforeach
         </div>
-    </div>
-
-    <div class="">
-        <livewire:components.articles.categories-articles/>
     </div>
 
     <div class="">

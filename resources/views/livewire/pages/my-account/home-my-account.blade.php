@@ -1,41 +1,156 @@
 <div class="max-w-7xl mx-auto px-4 py-6">
     @if (auth()->user()->developer)
         <div class="bg-white border border-gray-200 rounded-2xl shadow-md p-6">
-                <div class="mt-8 relative">
-                    <div class="absolute right-10 top-0">
-                        <button class="text-[#1F2937] bg-[#14B8A6] px-5 py-1 rounded-md flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M17.293 2.707a1 1 0 011.414 1.414L8.707 13H6v-2.707L13.586 2.707a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
-                            Editar suas informações
-                        </button>
-                    </div>
+            <form wire:submit="updateUser()" class="mt-8 relative">
+                <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Meu Perfil de Autor</h3>
 
-                    <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Meu Perfil de Autor</h3>
+                <div class="flex items-center gap-4">
+                    @if ($open)
+                        <div x-data="{
+                                    editing: false,
+                                    tempUrl: null,
+                                    revert() {
+                                        this.editing = false;
+                                        $wire.set('form.photo', null); // Reseta o campo de foto para null
+                                    },
+                                    handleFileChange(event) {
+                                        const file = event.target.files[0];
+                                        if (file && file.type.startsWith('image/')) {
+                                            this.tempUrl = URL.createObjectURL(file);
+                                            this.editing = true;
+                                        }
+                                    }
+                                }" class="relative w-24 h-24">
+                            <img
+                                :src="editing && tempUrl ? tempUrl : '{{ $form->user->developer?->photo ?? 'https://via.placeholder.com/96' }}'"
+                                alt="Foto de Perfil"
+                                class="w-24 h-24 rounded-full object-cover border border-gray-300"
+                            >
 
-                    <div class="flex items-center gap-4">
-                        <!-- Imagem de Perfil -->
-                        <img src="{{ auth()->user()->developer->photo }}" alt="Foto de Perfil" class="w-24 h-24 rounded-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition rounded-full cursor-pointer"
+                                @click="$refs.fileInput.click()"
+                            >
+                                <x-edit-icon width="24px" height="24px" color="white" />
+                            </div>
 
-                        <!-- Informações do Developer -->
-                        <div>
-                            <p class="text-lg font-medium text-[#1F2937]">{{ auth()->user()->developer->name }}</p>
-                            <p class="text-sm text-gray-500">{{ auth()->user()->developer->bio }}</p>
+                            <input
+                                type="file"
+                                class="hidden"
+                                x-ref="fileInput"
+                                wire:model="form.photo"
+                                @change="handleFileChange"
+                                accept="image/*"
+                            >
+
+                            <template x-if="editing">
+                                <button
+                                    type="button"
+                                    @click="revert"
+                                    class="absolute -bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-1 bg-white border border-gray-300 rounded-full shadow text-gray-500 hover:bg-gray-100 transition"
+                                >
+                                    Cancelar
+                                </button>
+                            </template>
                         </div>
-                    </div>
+                    @else
+                        <img
+                            src="{{ $form->user->developer?->photo ?? 'https://via.placeholder.com/96' }}"
+                            alt="Foto de Perfil"
+                            class="w-24 h-24 rounded-full object-cover border border-gray-300"
+                        >
+                    @endif
 
-                    <!-- Indicador de atividade -->
-                    <div class="mt-6">
-                        <h4 class="text-lg font-semibold text-[#1F2937] mb-2">Atividade de Posts</h4>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-[#14B8A6] h-2 rounded-full"
-                                 style="width: {{ $articlesCount * 0.50 }}%"></div>
-                        </div>
-                        <p class="text-sm text-gray-500 mt-2">Você já escreveu {{ $articlesCount }} artigos.</p>
+                    <!-- Nome -->
+                    <div class="flex flex-col w-full sm:w-1/3 gap-2">
+                        @if ($open)
+                            <label class="text-sm text-gray-500">Nome:</label>
+
+                            <input
+                                type="text"
+                                wire:model.blur="form.name"
+                                class="text-[#1F2937] text-base rounded-xl border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition w-full"
+                            />
+                        @else
+                            <p class="text-lg font-medium text-[#1F2937]">{{ $form->name }}</p>
+                        @endif
+
+                        <!-- Bio -->
+                        @if ($open)
+                            <label class="text-sm text-gray-500">Biografia:</label>
+                            <textarea wire:model.blur="form.bio"
+                                      class="w-full text-[#1F2937] text-sm rounded-xl border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition w-full resize-none">
+
+                            </textarea>
+                        @else
+                            <p class="text-sm text-gray-500">{{ $form->bio }}</p>
+                        @endif
                     </div>
                 </div>
+
+                <!-- Email -->
+                <div class="mt-4">
+                    <label class="text-sm text-gray-500">E-mail:</label>
+                    @if ($open)
+                        <input type="email" wire:model.blur="form.email"
+                               class="text-[#1F2937] text-base rounded-xl border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition w-full" />
+                    @else
+                        <p class="text-[#1F2937]">{{ $form->email }}</p>
+                    @endif
+                </div>
+
+                @if (Auth::user()->role === 'administrator')
+                    <div class="mt-4">
+                        <label class="text-sm text-gray-500">Papel de acesso:</label>
+                        @if($open)
+                            <select wire:model.blur="form.role"
+                                    class="text-[#1F2937] text-base rounded-xl border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition w-full">
+                                <option value="user">Usuário</option>
+                                <option value="administrator">Administrador</option>
+                            </select>
+                        @else
+                            <p class="text-[#1F2937] capitalize">{{ $form->role }}</p>
+                        @endif
+                    </div>
+                @endif
+
+
+                <!-- Indicador de atividade -->
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold text-[#1F2937] mb-2">Atividade de Posts</h4>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-[#14B8A6] h-2 rounded-full"
+                             style="width: {{ $articlesCount * 0.5 }}%"></div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Você já escreveu {{ $articlesCount }} artigos.</p>
+                </div>
+
+                <!-- Botões -->
+                <div class="sm:absolute sm:right-10 sm:top-0 w-full sm:w-auto mt-4 sm:mt-0 flex gap-4">
+                    @if (!$open)
+                        <button wire:click="startEdit()"
+                                type="button"
+                                class="text-[#1F2937] bg-[#14B8A6] px-5 py-1 rounded-md flex items-center justify-center gap-2 w-full">
+                            <x-edit-icon width="16px" height="16px" color="currentColor"/>
+                            Editar suas informações
+                        </button>
+                    @else
+                        <button wire:click="resetForm"
+                                class="bg-gray-300 text-[#1F2937] px-4 py-1 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-red-400 w-full sm:w-auto">
+                            <x-delete-icon width="16px" height="16px" color="currentColor"/>
+                            Descartar
+                        </button>
+                        <button type="submit"
+                                wire:click="updateUser"
+                                class="bg-[#14B8A6] text-[#1F2937] px-4 py-1 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-[#14B8A6]/90 w-full sm:w-auto">
+                            <x-save-icon width="16px" height="16px" color="currentColor"/>
+                            Salvar alterações
+                        </button>
+                    @endif
+                </div>
+            </form>
         </div>
-        <!-- Artigos vinculados -->
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
                 <!-- Artigos vinculados -->
                 <div class="lg:col-span-2">
@@ -95,4 +210,26 @@
                 </div>
             </div>
     @endif
+    @script
+    <script>
+        $wire.on('success', (event) => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: event.title,
+                confirmButtonText: 'Ok'
+            });
+        });
+
+        $wire.on('error', (event) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: event.title,
+                confirmButtonText: 'Ok'
+            });
+        });
+
+    </script>
+    @endscript
 </div>

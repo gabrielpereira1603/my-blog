@@ -2,64 +2,42 @@
 
 namespace App\Livewire\Pages\MyAccount;
 
+use App\Livewire\Forms\MyAccount\EditInfoUserForm;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Developer;
+use App\Trait\MyAccount\HomeMyAccount\HandlesUpdateInfoUserTrait;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class HomeMyAccount extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
-    public string $name = '';
-    public string $email = '';
-    public string $bio = '';
-    public int $articlesCount = 0; // Contagem de artigos do Developer
-    public bool $open = false; // Controle de exibição do formulário de edição
+    use HandlesUpdateInfoUserTrait;
 
-    // Método chamado ao carregar o componente
+    public EditInfoUserForm $form;
+    public int $articlesCount = 0;
+
     public function mount()
     {
-        $user = Auth::user();
-        $this->name = $user->name;
-        $this->email = $user->email;
-
-        // Se o usuário for developer, carrega os dados específicos
-        if ($user->developer) {
-            $this->bio = $user->developer->bio;
-            $this->articlesCount = $user->developer->articles()->count();
-        }
-    }
-
-    // Método para atualizar as informações do usuário
-    public function updateUser()
-    {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-        ]);
-
-        $user = Auth::user();
-        $user->name = $this->name;
-        $user->email = $this->email;
-        $user->save();
-
-        session()->flash('message', 'Informações atualizadas com sucesso!');
+        $this->form->user = Auth::user();
+        $this->startForm();
     }
 
     public function render()
     {
         $user = Auth::user();
+
         $developer = $user->developer;
 
-        // Carrega os artigos do developer
         $developerArticles = $developer
             ? $developer->articles()->latest()->paginate(5)
             : collect();
 
-        // Carrega as categorias com mais artigos do developer
         $topCategories = $developer
             ? Category::whereHas('articles.developers', function ($query) use ($developer) {
                 $query->where('developers.id', $developer->id);
@@ -74,7 +52,6 @@ class HomeMyAccount extends Component
                 ->get()
             : collect();
 
-        // Carrega os últimos artigos do developer
         $latestArticles = $developer
             ? $developer->articles()->latest()->take(4)->get()
             : collect();

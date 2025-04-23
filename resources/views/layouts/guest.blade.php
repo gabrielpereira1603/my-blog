@@ -15,9 +15,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-[#F9FAFB]">
 
-            <div class="mb-[105px] sm:mb-44">
+            <div class="mb-[105px] sm:mb-24">
                 <livewire:layout.navigation-user />
             </div>
 

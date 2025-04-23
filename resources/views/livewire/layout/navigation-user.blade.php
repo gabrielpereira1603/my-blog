@@ -97,7 +97,7 @@ new class extends Component {
                         x-transition
                         class="absolute top-8 right-0 w-52 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden"
                     >
-                        <a href="#"
+                        <a href="{{ route('home.my_account') }}"
                            class="flex items-center gap-2 px-4 py-3 text-sm text-[#1F2937] hover:bg-[#14B8A6]/10 transition-all duration-150">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#14B8A6]" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor" stroke-width="1.5">

@@ -4,23 +4,35 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 class DeveloperFactory extends Factory
 {
+    protected static $usedUserIds = [];
+
     public function definition(): array
     {
-        $userIds = User::whereIn('email', [
-            'pereiragabrieldev@gmail.com',
-            'Lucas.trabalon@ceopag.com.br',
-        ])->pluck('id');
+        $availableUsers = User::whereNotIn('id', static::$usedUserIds)->get();
+
+        if ($availableUsers->isEmpty()) {
+            return [
+                'name' => $this->faker->name(),
+                'email' => $this->faker->unique()->safeEmail(),
+                'photo' => $this->faker->imageUrl(200, 200, 'people', true, 'Developer'),
+                'bio' => $this->faker->paragraph(3),
+                'user_id' => null,
+            ];
+        }
+
+        $user = $availableUsers->random();
+        static::$usedUserIds[] = $user->id;
 
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'name' => $user->name,
+            'email' => $user->email,
             'photo' => $this->faker->imageUrl(200, 200, 'people', true, 'Developer'),
             'bio' => $this->faker->paragraph(3),
-            'user_id' => $this->faker->randomElement($userIds),
+            'user_id' => $user->id,
         ];
     }
-
 }

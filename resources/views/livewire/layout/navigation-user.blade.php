@@ -29,7 +29,9 @@ new class extends Component {
         [
             'label' => 'Conta',
             'icon' => '',
-            'items' => [
+            'items' => Auth::check() ? [
+                ['label' => 'Minha conta', 'href' => ''],
+            ] : [
                 ['label' => 'Login', 'href' => ''],
                 ['label' => 'Criar Conta', 'href' => ''],
             ]
@@ -48,29 +50,74 @@ new class extends Component {
     ];
 @endphp
 
+
 <nav x-data="{ open: false }" class="bg-white border-b border-[#1F2937] fixed top-0 left-0 w-full z-50 shadow-md">
     @if (Auth::check())
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <!-- Menu Mobile -->
-                <button @click="open = true" class="sm:hidden text-[#1F2937] focus:outline-none">
-                    ☰
+        <div class="max-w-7xl p-5 mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center relative">
+
+                <button @click="open = !open" class="sm:hidden text-[#1F2937] focus:outline-none">
+                    <template x-if="!open">
+                        <span>☰</span>
+                    </template>
+                    <template x-if="open">
+                        <span>✕</span>
+                    </template>
                 </button>
 
-                <!-- Logo centralizada -->
-                <div class="w-full sm:w-1/3 flex justify-center">
+                <!-- Logo centralizada para telas pequenas -->
+                <div class="flex sm:hidden w-full justify-center">
                     <a href="{{ route('home') }}">
                         <img src="{{ asset('/logos/logo-transparante.png') }}" alt="Logo transparente" width="100px"/>
                     </a>
                 </div>
 
-                <!-- Dropdown no lado direito -->
-                <div class="hidden sm:flex w-1/3 justify-end">
-                    <ul class="text-black flex gap-4">
-                        <li>Artigos</li>
-                        <li>b</li>
-                        <li>c</li>
+                <!-- Links centrais (somente para telas grandes) -->
+                <div class="hidden sm:flex flex-1 justify-center transform -translate-x-1/2">
+                    <ul class="flex items-center text-center gap-5">
+                        <li><a href="#"><x-instagram-icon widht="20px" height="20px" color="#1F2937"/></a></li>
                     </ul>
+                </div>
+
+                <!-- Logo centralizada para telas grandes -->
+                <div class="hidden sm:flex w-1/3 justify-center">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('/logos/logo-transparante.png') }}" alt="Logo transparente" width="100px"/>
+                    </a>
+                </div>
+
+                <div x-data="{ open: false }" class="hidden sm:flex w-1/3 justify-end relative">
+                    <button @click="open = !open" class="focus:outline-none transition hover:scale-105">
+                        <x-user-icon width="20px" height="20px" color="#1F2937"/>
+                    </button>
+
+                    <div
+                        x-show="open"
+                        @click.away="open = false"
+                        x-transition
+                        class="absolute top-8 right-0 w-52 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden"
+                    >
+                        <a href="#"
+                           class="flex items-center gap-2 px-4 py-3 text-sm text-[#1F2937] hover:bg-[#14B8A6]/10 transition-all duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#14B8A6]" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 1115 0H4.5z" />
+                            </svg>
+                            Minha conta
+                        </a>
+                        <button wire:click="logout" class="w-full text-start">
+                            <div
+                                class="flex items-center gap-2 px-4 py-3 text-sm text-[#DC2626] hover:bg-[#DC2626]/10 transition-all duration-150">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#DC2626]" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21H13.5a2.25 2.25 0 002.25-2.25V15m3-3h-9m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                Sair
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,15 +169,6 @@ new class extends Component {
             </div>
 
         </div>
-
-        @unless(Route::is('login', 'register'))
-            <ul class="hidden bg-[#14B8A6] text-[#1F2937] uppercase font-bold sm:flex justify-around items-center text-center gap-5 p-6">
-                <li><a href="#">Início</a></li>
-                <li><a href="#">Novidades</a></li>
-                <li><a href="#">Artigos</a></li>
-                <li><a href="#">Top 10</a></li>
-            </ul>
-        @endunless
     @endif
 
     <!-- Menu Mobile Tela Cheia -->
@@ -153,14 +191,31 @@ new class extends Component {
                             </a>
                         </li>
                     @endforeach
+
+                    @if (Auth::check())
+                    <li>
+                        <button wire:click="logout" class="flex items-center gap-1 text-center justify-center block text-[#DC2626] dark:text-[#F8FAFC] hover:text-[#F8FAFC] transition duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#DC2626] " fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21H13.5a2.25 2.25 0 002.25-2.25V15m3-3h-9m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                            Sair
+                        </button>
+                    </li>
+                    @endif
                 </ul>
             </div>
         @endforeach
 
         <div class="mt-6">
-            <button class="w-full bg-[#14B8A6] p-3 rounded-md hover:bg-gray-600 transition-colors duration-200">
-                <p class="text-center text-white font-bold">Junte-se a nós</p>
-            </button>
+            <a >
+                <button class="w-full bg-[#14B8A6] p-3 rounded-md hover:bg-[#0D9488] transition-colors duration-200">
+                    <p class="text-center text-white font-bold">
+                        {{ Auth::check() ? 'Se tornar autor!' : 'Junte-se a nós' }}
+                    </p>
+                </button>
+            </a>
         </div>
     </div>
 </nav>

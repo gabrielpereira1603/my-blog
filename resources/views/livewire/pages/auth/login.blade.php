@@ -17,9 +17,14 @@ $login = function () {
 
     Session::regenerate();
 
-    $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
-};
+    $role = auth()->user()->role;
 
+    if ($role === 'administrator') {
+        $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+    } else {
+        $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+    }
+};
 ?>
 
 <section class="h-screen flex items-center justify-center px-4 py-12">

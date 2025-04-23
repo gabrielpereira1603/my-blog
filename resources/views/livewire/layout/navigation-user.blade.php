@@ -30,11 +30,11 @@ new class extends Component {
             'label' => 'Conta',
             'icon' => '',
             'items' => Auth::check() ? [
-                ['label' => 'Minha conta', 'href' => ''],
+                ['label' => 'Minha conta', 'href' => route('home.my_account')],
             ] : [
-                ['label' => 'Login', 'href' => ''],
-                ['label' => 'Criar Conta', 'href' => ''],
-            ]
+                ['label' => 'Login', 'href' => route('login')],
+                ['label' => 'Criar Conta', 'href' => route('register')],
+            ],
         ],
         [
             'label' => 'Categorias',
@@ -106,6 +106,14 @@ new class extends Component {
                             </svg>
                             Minha conta
                         </a>
+                        @if(Auth::User()->developer)
+                            <a href="{{ route('view-my-articles') }}"
+                               class="flex items-center gap-2 px-4 py-3 text-sm text-[#1F2937] hover:bg-[#14B8A6]/10 transition-all duration-150">
+                                <x-newspaper-icon width="16px" height="16px" color="#14B8A6"/>
+                                Meus Artigos
+                            </a>
+                        @endif
+
                         <button wire:click="logout" class="w-full text-start">
                             <div
                                 class="flex items-center gap-2 px-4 py-3 text-sm text-[#DC2626] hover:bg-[#DC2626]/10 transition-all duration-150">
@@ -191,31 +199,25 @@ new class extends Component {
                             </a>
                         </li>
                     @endforeach
-
-                    @if (Auth::check())
-                    <li>
-                        <button wire:click="logout" class="flex items-center gap-1 text-center justify-center block text-[#DC2626] dark:text-[#F8FAFC] hover:text-[#F8FAFC] transition duration-150">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#DC2626] " fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21H13.5a2.25 2.25 0 002.25-2.25V15m3-3h-9m0 0l3-3m-3 3l3 3" />
-                            </svg>
-                            Sair
-                        </button>
-                    </li>
-                    @endif
                 </ul>
             </div>
         @endforeach
-
         <div class="mt-6">
-            <a >
+            @if(Auth::check() && !Auth::user()->developer)
+            <a href="{{ route('become-author') }}">
                 <button class="w-full bg-[#14B8A6] p-3 rounded-md hover:bg-[#0D9488] transition-colors duration-200">
                     <p class="text-center text-white font-bold">
-                        {{ Auth::check() ? 'Se tornar autor!' : 'Junte-se a nós' }}
+                        Se tornar autor!
                     </p>
                 </button>
             </a>
+            @endif
+
+            @if(Auth::check())
+                <button wire:click="logout" type="button" class="w-full bg-red-500 p-3 rounded-md hover:bg-red-600 transition-colors duration-200">
+                    <p class="text-center text-white font-bold">Sair da sua conta</p>
+                </button>
+            @endif
         </div>
     </div>
 </nav>

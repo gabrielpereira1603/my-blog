@@ -6,6 +6,7 @@ use App\Livewire\Forms\MyAccount\EditInfoUserForm;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Developer;
+use App\Trait\MyAccount\HomeMyAccount\HandlesConvertUserToDeveloper;
 use App\Trait\MyAccount\HomeMyAccount\HandlesUpdateInfoUserTrait;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -18,6 +19,7 @@ class HomeMyAccount extends Component
     use WithFileUploads;
 
     use HandlesUpdateInfoUserTrait;
+    use HandlesConvertUserToDeveloper;
 
     public EditInfoUserForm $form;
     public int $articlesCount = 0;

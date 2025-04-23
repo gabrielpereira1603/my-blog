@@ -152,63 +152,212 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
-                <!-- Artigos vinculados -->
-                <div class="lg:col-span-2">
-                    <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Artigos vinculados</h3>
-                    @forelse ($developerArticles as $article)
-                        <div class="mb-4 p-4 bg-white rounded-xl shadow">
-                            <h4 class="text-lg font-semibold text-[#14B8A6]">{{ $article->title }}</h4>
-                            <p class="text-sm text-gray-500 mb-2">{{ $article->published_at->format('d/m/Y') }}</p>
+            <!-- Artigos vinculados -->
+            <div class="lg:col-span-2">
+                <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Artigos vinculados</h3>
+                @forelse ($developerArticles as $article)
+                    <div class="mb-4 p-4 bg-white rounded-xl shadow">
+                        <h4 class="text-lg font-semibold text-[#14B8A6]">{{ $article->title }}</h4>
+                        <p class="text-sm text-gray-500 mb-2">{{ $article->published_at->format('d/m/Y') }}</p>
 
-                            <div class="flex items-center flex-wrap gap-2">
-                                @foreach ($article->developers as $dev)
-                                    <div class="flex items-center gap-2 bg-[#F9FAFB] px-3 py-1 rounded-full shadow-sm">
-                                        <svg class="w-4 h-4 text-[#14B8A6]" fill="none" stroke="currentColor" stroke-width="2"
-                                             viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M5.121 17.804A8.966 8.966 0 0012 21c2.254 0 4.304-.832 5.879-2.196M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        </svg>
-                                        <span class="text-sm text-gray-700">{{ $dev->name }}</span>
-                                    </div>
-                                @endforeach
-                            </div>
+                        <div class="flex items-center flex-wrap gap-2">
+                            @foreach ($article->developers as $dev)
+                                <div class="flex items-center gap-2 bg-[#F9FAFB] px-3 py-1 rounded-full shadow-sm">
+                                    <svg class="w-4 h-4 text-[#14B8A6]" fill="none" stroke="currentColor" stroke-width="2"
+                                         viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M5.121 17.804A8.966 8.966 0 0012 21c2.254 0 4.304-.832 5.879-2.196M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    <span class="text-sm text-gray-700">{{ $dev->name }}</span>
+                                </div>
+                            @endforeach
                         </div>
-                    @empty
-                        <p class="text-gray-500">Nenhum artigo encontrado.</p>
-                    @endforelse
-
-                    <div class="mt-4">
-                        {{ $developerArticles->links() }}
                     </div>
-                </div>
+                @empty
+                    <p class="text-gray-500">Nenhum artigo encontrado.</p>
+                @endforelse
 
-
-                <!-- Mais postadas -->
-                <div>
-                    <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Categorias mais postadas</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topCategories as $category)
-                            <li class="bg-[#F3F4F6] px-4 py-2 rounded-full text-[#14B8A6] font-medium shadow">
-                                {{ $category->name }} ({{ $category->articles_count }})
-                            </li>
-                        @endforeach
-                    </ul>
+                <div class="mt-4">
+                    {{ $developerArticles->links() }}
                 </div>
             </div>
 
+            <div>
+                <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Categorias mais postadas</h3>
+                <ul class="space-y-2">
+                    @forelse ($topCategories as $category)
+                        <li class="bg-[#F3F4F6] px-4 py-2 rounded-full text-[#14B8A6] font-medium shadow">
+                            {{ $category->name }} ({{ $category->articles_count }})
+                        </li>
+                    @empty
+                        <li class="text-gray-500 italic">Nenhuma categoria encontrada.</li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
         <!-- Últimos posts -->
         <div class="mt-10">
-                <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Últimos 4 artigos publicados</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    @foreach ($latestArticles as $article)
-                        <div class="bg-white rounded-xl shadow p-4 flex flex-col justify-between">
-                            <h4 class="text-base font-semibold text-[#1F2937]">{{ $article->title }}</h4>
-                            <p class="text-sm text-gray-500 mt-1">{{ $article->published_at->format('d M Y') }}</p>
-                            <a href="#" class="text-sm text-[#14B8A6] mt-2 hover:underline">Ver artigo →</a>
+            <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Últimos 4 artigos publicados</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @forelse ($latestArticles as $article)
+                    <div class="bg-white rounded-xl shadow p-4 flex flex-col justify-between">
+                        <h4 class="text-base font-semibold text-[#1F2937]">{{ $article->title }}</h4>
+                        <p class="text-sm text-gray-500 mt-1">{{ $article->published_at->format('d M Y') }}</p>
+                        <a href="#" class="text-sm text-[#14B8A6] mt-2 hover:underline">Ver artigo →</a>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-500 italic">
+                        Nenhum artigo publicado ainda.
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    @else
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-md p-6">
+            <h3 class="text-xl font-semibold text-[#1F2937] mb-4">Minha Conta</h3>
+
+            <form wire:submit.prevent="updateUser()" class="space-y-4">
+                <!-- Nome -->
+                <div>
+                    <label class="text-sm text-gray-500">Nome:</label>
+                    <input type="text" wire:model.defer="form.name"
+                           class="w-full text-[#1F2937] text-base rounded-xl border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition" />
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="text-sm text-gray-500">E-mail:</label>
+                    <input type="email" wire:model.defer="form.email"
+                           class="w-full text-[#1F2937] text-base rounded-xl border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition" />
+                </div>
+
+                <div class="flex justify-end gap-4">
+                    <button
+                        wire:click="$toggle('showDeveloperForm')"
+                        type="button"
+                        class="text-[#14B8A6] border border-[#14B8A6] hover:bg-[#14B8A6] hover:text-white transition px-4 py-2 rounded-lg"
+                    >
+                        Se tornar um autor
+                    </button>
+                    <button type="submit"
+                            class="bg-[#14B8A6] text-white px-4 py-2 rounded-lg hover:bg-[#14B8A6]/90 transition">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+
+            @if ($showDeveloperForm)
+                <div class="mt-6 bg-white border border-gray-200 rounded-2xl shadow-md p-6">
+                    <h4 class="text-lg font-semibold text-[#1F2937] mb-4">Se tornar um autor</h4>
+
+                    <form wire:submit.prevent="becomeAuthor" class="space-y-4">
+                        <div x-data="{
+                                editing: false,
+                                tempUrl: null,
+                                revert() {
+                                    this.editing = false;
+                                    $wire.set('form.photo', null);
+                                },
+                                handleFileChange(event) {
+                                    const file = event.target.files[0];
+                                    if (file && file.type.startsWith('image/')) {
+                                        this.tempUrl = URL.createObjectURL(file);
+                                        this.editing = true;
+                                    }
+                                }
+                            }" class="flex items-center gap-4">
+                            <div class="relative w-24 h-24">
+                                <img
+                                    :src="editing && tempUrl ? tempUrl : '{{ auth()->user()->developer?->photo ?? 'https://via.placeholder.com/96' }}'"
+                                    alt="Foto de Perfil"
+                                    class="w-24 h-24 rounded-full object-cover border border-gray-300"
+                                >
+
+                                <div
+                                    class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition rounded-full cursor-pointer"
+                                    @click="$refs.fileInput.click()"
+                                >
+                                    <x-edit-icon width="24px" height="24px" color="white" />
+                                </div>
+
+                                <input
+                                    type="file"
+                                    class="hidden"
+                                    x-ref="fileInput"
+                                    wire:model="form.photo"
+                                    @change="handleFileChange"
+                                    accept="image/*"
+                                >
+
+                                <template x-if="editing">
+                                    <button
+                                        type="button"
+                                        @click="revert"
+                                        class="absolute -bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-1 bg-white border border-gray-300 rounded-full shadow text-gray-500 hover:bg-gray-100 transition"
+                                    >
+                                        Cancelar
+                                    </button>
+                                </template>
+                            </div>
+
+                            <div>
+                                <label class="text-sm text-gray-500">Foto de perfil</label>
+                                <p class="text-xs text-gray-400">Clique na imagem para alterar</p>
+                                @error('form.photo')
+                                <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
-                    @endforeach
+
+
+                        <!-- Bio -->
+                        <div>
+                            <label class="text-sm text-gray-500">Bio:</label>
+                            <textarea wire:model.defer="form.bio" rows="4"
+                                      class="w-full border border-gray-300 rounded-xl px-4 py-2 resize-none"></textarea>
+                            @error('form.bio') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="flex justify-end gap-4">
+                            <button type="button" wire:click="$set('showDeveloperForm', false)"
+                                    class="text-gray-500 hover:text-gray-700 px-4 py-2">
+                                Cancelar
+                            </button>
+
+                            <button type="submit"
+                                    class="bg-[#14B8A6] text-white px-4 py-2 rounded-lg hover:bg-[#14B8A6]/90 transition">
+                                Criar perfil de autor
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            @endif
+        </div>
+
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10 opacity-40 pointer-events-none select-none">
+            <div class="lg:col-span-2">
+                <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+                    <h4 class="text-lg font-semibold text-gray-400">Artigos vinculados</h4>
+                    <p class="text-sm text-gray-400 mt-2">Se torne um autor para desbloquear esta área.</p>
                 </div>
             </div>
+
+            <div>
+                <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+                    <h4 class="text-lg font-semibold text-gray-400">Categorias mais postadas</h4>
+                    <p class="text-sm text-gray-400 mt-2">Se torne um autor para desbloquear esta área.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 opacity-40 pointer-events-none select-none">
+            <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+                <h4 class="text-lg font-semibold text-gray-400">Últimos 4 artigos publicados</h4>
+                <p class="text-sm text-gray-400 mt-2">Se torne um autor para desbloquear esta área.</p>
+            </div>
+        </div>
     @endif
     @script
     <script>

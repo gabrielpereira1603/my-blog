@@ -17,16 +17,9 @@ class CreateArticle extends Component
     use HandlesCategoriesAndDevelopersTrait;
 
     public CreateArticleForm $form;
-
-
     public function mount()
     {
         $this->form->published_at = now()->format('Y-m-d');
-    }
-
-    public function updated()
-    {
-
     }
 
     public function save()

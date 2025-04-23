@@ -57,8 +57,12 @@ trait HandlesUpdateInfoUserTrait
     public function startForm()
     {
         $this->extracted();
-        $this->articlesCount = optional($this->form->user->developer)->articles->count();
+
+        $developer = $this->form->user->developer;
+
+        $this->articlesCount = $developer ? $developer->articles()->count() : 0;
     }
+
     public function resetForm()
     {
         $this->extracted();

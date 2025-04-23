@@ -1,12 +1,12 @@
 <div class="max-w-4xl mx-auto px-4 py-10">
-    <h1 class="text-2xl font-bold text-[#1F2937] mb-8">Criar novo artigo</h1>
+    <h1 class="text-2xl font-bold text-[#1F2937] mb-8">Editar artigo</h1>
 
     <form wire:submit.prevent="save" class="space-y-6">
         {{-- Título --}}
         <div>
             <label class="block mb-2 text-sm font-medium text-[#1F2937]">Título</label>
             <input type="text" wire:model.live="form.title"
-                   placeholder="Ex: Como escolher a paleta ideal para seu projeto"
+                   placeholder="Título do artigo"
                    class="w-full px-4 py-2 border border-[#14B8A6] rounded-xl shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-[#14B8A6] focus:outline-none">
         </div>
 
@@ -14,23 +14,32 @@
         <div>
             <label class="block mb-2 text-sm font-medium text-[#1F2937]">Conteúdo</label>
             <textarea wire:model.live="form.content" rows="6"
-                      placeholder="Digite o conteúdo do artigo aqui..."
+                      placeholder="Conteúdo do artigo"
                       class="w-full px-4 py-2 border border-[#14B8A6] rounded-xl shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-[#14B8A6] focus:outline-none resize-none"></textarea>
         </div>
 
-        {{-- Imagem de capa --}}
+        {{-- Imagem atual --}}
+        @if($article->cover_image && !$form->cover_image)
+            <div class="mb-4">
+                <label class="block mb-2 text-sm font-medium text-[#1F2937]">Imagem atual</label>
+                <img src="{{ $article->cover_image }}" alt="Imagem atual"
+                     class="w-48 h-48 object-cover rounded-2xl shadow-lg border-2 border-[#14B8A6]">
+            </div>
+        @endif
+
+        {{-- Imagem de capa (nova) --}}
         <div>
-            <label class="block mb-2 text-sm font-medium text-[#1F2937]">Imagem de capa</label>
+            <label class="block mb-2 text-sm font-medium text-[#1F2937]">Nova imagem de capa (opcional)</label>
             <input type="file" wire:model.blur="form.cover_image"
                    class="w-full text-sm text-gray-500 file:bg-[#14B8A6] file:text-white file:rounded-xl file:border-0 file:px-4 file:py-2 hover:file:bg-[#14B8A6]/90 transition-colors">
         </div>
 
-        {{-- Preview da imagem de capa --}}
+        {{-- Preview da nova imagem --}}
         @if($form->cover_image)
             <div class="flex flex-col items-center gap-2">
                 <div class="relative">
                     <img src="{{ $form->cover_image->temporaryUrl() }}"
-                         alt="Foto selecionada"
+                         alt="Nova imagem selecionada"
                          class="w-48 h-48 object-cover rounded-2xl shadow-lg border-2 border-[#14B8A6]">
                     <button type="button" wire:click="clearPhoto"
                             class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition">
@@ -79,7 +88,6 @@
             </div>
         </div>
 
-
         {{-- Botões --}}
         <div class="flex justify-end gap-4">
             <a href="{{ route('home') }}"
@@ -92,10 +100,11 @@
                 class="flex items-center justify-center gap-2 px-7 py-3 bg-[#14B8A6] hover:bg-[#14B8A6]/90 text-white font-semibold rounded-xl shadow-md transition-colors"
                 wire:loading.attr="disabled">
                 <x-send-icon width="16px" height="16px" color="currentColor"/>
-                Publicar artigo
+                Salvar alterações
             </button>
         </div>
     </form>
+
     @script
     <script>
         $wire.on('success', (event) => {
@@ -115,7 +124,6 @@
                 confirmButtonText: 'Ok'
             });
         });
-
     </script>
     @endscript
 </div>

@@ -10,7 +10,11 @@ return new class extends Migration
     {
         Schema::create('developers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->unique()
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('photo')->nullable();

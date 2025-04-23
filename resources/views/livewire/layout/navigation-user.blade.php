@@ -202,9 +202,9 @@ new class extends Component {
                 </ul>
             </div>
         @endforeach
-        <div class="mt-6">
+        <div class="mt-6 flex flex-col gap-2">
             @if(Auth::check() && !Auth::user()->developer)
-            <a href="{{ route('become-author') }}">
+            <a href="{{ route('home.my_account') }}">
                 <button class="w-full bg-[#14B8A6] p-3 rounded-md hover:bg-[#0D9488] transition-colors duration-200">
                     <p class="text-center text-white font-bold">
                         Se tornar autor!

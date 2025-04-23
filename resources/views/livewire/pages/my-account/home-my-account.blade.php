@@ -232,13 +232,7 @@
                 </div>
 
                 <div class="flex justify-end gap-4">
-                    <button
-                        wire:click="$toggle('showDeveloperForm')"
-                        type="button"
-                        class="text-[#14B8A6] border border-[#14B8A6] hover:bg-[#14B8A6] hover:text-white transition px-4 py-2 rounded-lg"
-                    >
-                        Se tornar um autor
-                    </button>
+
                     <button type="submit"
                             class="bg-[#14B8A6] text-white px-4 py-2 rounded-lg hover:bg-[#14B8A6]/90 transition">
                         Salvar
@@ -333,9 +327,13 @@
                 </div>
             @endif
         </div>
-
-
-
+        <button
+            wire:click="$toggle('showDeveloperForm')"
+            type="button"
+            class="w-full mt-5 py-4 text-xl font-semibold text-white bg-[#14B8A6] hover:bg-[#119b8f] focus:outline-none focus:ring-4 focus:ring-[#14B8A6] shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out animate-pulse rounded-lg"
+        >
+            Se tornar um autor
+        </button>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10 opacity-40 pointer-events-none select-none">
             <div class="lg:col-span-2">
                 <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">

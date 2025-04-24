@@ -42,8 +42,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#F3F4F6] p-6 rounded-xl shadow-lg">
                 <div class="flex flex-col">
                     <label for="bio" class="text-sm font-medium text-gray-700">Bio</label>
-                    <input id="bio" type="text" wire:model.live="form.isDeveloper" class="mt-1 p-3 border border-[#14B8A6] rounded-lg focus:ring-2 focus:ring-[#14B8A6]" placeholder="Escreva uma breve biografia">
-                    @error('form.isDeveloper') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <input id="bio" type="text" wire:model.live="form.bio" class="mt-1 p-3 border border-[#14B8A6] rounded-lg focus:ring-2 focus:ring-[#14B8A6]" placeholder="Escreva uma breve biografia">
+                    @error('form.bio') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="flex flex-col">

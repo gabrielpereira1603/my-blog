@@ -11,13 +11,13 @@ class CreateUserForm extends Form
     use WithFileUploads;
 
     #[Validate('required|string|max:255')]
-    public string $name = 'João Caetano';
+    public string $name = '';
 
     #[Validate('required|email|unique:users,email')]
-    public string $email = 'joao@teste.com';
+    public string $email = '';
 
     #[Validate('required|min:6')]
-    public string $password = 'joao12345';
+    public string $password = '';
 
     #[Validate('required|in:administrator,user')]
     public string $role = 'user';
@@ -29,5 +29,5 @@ class CreateUserForm extends Form
     public $photo;
 
     #[Validate('nullable|string|max:255')]
-    public string $bio = 'hy, my name is joão!s';
+    public string $bio = '';
 }

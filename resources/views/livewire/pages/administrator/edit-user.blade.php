@@ -175,9 +175,11 @@
                 <p class="text-gray-500">Nenhum artigo encontrado.</p>
             @endforelse
 
-            <div class="mt-4">
-                {{ $developerArticles->links() }}
-            </div>
+            @if ($form->user->developer)
+                <div class="mt-4">
+                    {{ $developerArticles->links() }}
+                </div>
+            @endif
         </div>
 
         <div>

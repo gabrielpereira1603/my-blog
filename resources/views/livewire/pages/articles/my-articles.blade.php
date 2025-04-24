@@ -101,7 +101,7 @@
                                                    class="px-4 py-2 text-yellow-600 hover:text-yellow-800 w-full text-left">Editar</a>
                                             </li>
                                             <li><button wire:click="softDeleteArticle({{ $article->id }})"
-                                                        class="px-4 py-2 text-yellow-600 hover:text-yellow-800 w-full text-left">Desativar</button></li>
+                                                        class="px-4 py-2 text-red-600 hover:text-red-800 w-full text-left">Desativar</button></li>
                                             <li><a href="{{ route('view-one.article', $article->id) }}"
                                                    class="px-4 py-2 text-blue-600 hover:text-blue-800 w-full text-left">Visualizar</a></li>
                                         @endif

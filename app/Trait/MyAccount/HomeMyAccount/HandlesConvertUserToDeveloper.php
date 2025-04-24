@@ -29,6 +29,7 @@ trait HandlesConvertUserToDeveloper
         ]);
 
         $this->showDeveloperForm = false;
+        $this->mount();
         $this->dispatch('success', title: 'Parabéns! Agora você é um autor.');
     }
 }

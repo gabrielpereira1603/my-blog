@@ -175,7 +175,6 @@ new class extends Component {
                     </ul>
                 </div>
             </div>
-
         </div>
     @endif
 

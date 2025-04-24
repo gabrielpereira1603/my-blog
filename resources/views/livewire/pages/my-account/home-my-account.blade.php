@@ -22,7 +22,7 @@
                                     }
                                 }" class="relative w-24 h-24">
                             <img
-                                :src="editing && tempUrl ? tempUrl : '{{ $form->user->developer?->photo ?? 'https://via.placeholder.com/96' }}'"
+                                :src="editing && tempUrl ? tempUrl : '{{ $form->user->developer?->photo ?? Auth()->user()->developer->photo }}'"
                                 alt="Foto de Perfil"
                                 class="w-24 h-24 rounded-full object-cover border border-gray-300"
                             >

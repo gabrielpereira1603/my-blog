@@ -40,7 +40,6 @@ class MyArticles extends Component
     {
         $article = Article::withTrashed()->find($articleId);
 
-        // Desabilitando o "force delete" caso o artigo não esteja na lixeira
         if ($article->trashed()) {
             $article->forceDelete();
             $this->dispatch('success', title: 'Artigo excluído permanentemente!');

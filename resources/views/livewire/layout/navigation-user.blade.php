@@ -29,9 +29,13 @@ new class extends Component {
         [
             'label' => 'Conta',
             'icon' => '',
-            'items' => Auth::check() ? [
+            'items' => Auth::check() ? array_merge([
                 ['label' => 'Minha conta', 'href' => route('home.my_account')],
-            ] : [
+                ['label' => 'Meus Artigos', 'href' => route('view-my-articles')],
+            ], Auth::user()->role === 'administrator' ? [
+                ['label' => 'Painel Admin', 'href' => route('home.administrator')],
+                ['label' => 'Painel de Users', 'href' => route('manage-user')],
+            ] : []) : [
                 ['label' => 'Login', 'href' => route('login')],
                 ['label' => 'Criar Conta', 'href' => route('register')],
             ],
@@ -111,6 +115,18 @@ new class extends Component {
                                class="flex items-center gap-2 px-4 py-3 text-sm text-[#1F2937] hover:bg-[#14B8A6]/10 transition-all duration-150">
                                 <x-newspaper-icon width="16px" height="16px" color="#14B8A6"/>
                                 Meus Artigos
+                            </a>
+                        @endif
+                        @if(Auth::User()->role === 'administrator')
+                            <a href="{{ route('home.administrator') }}"
+                               class="flex items-center gap-2 px-4 py-3 text-sm text-[#1F2937] hover:bg-[#14B8A6]/10 transition-all duration-150">
+                                <x-manage-icon width="16px" height="16px" color="#14B8A6"/>
+                                Painel Admin
+                            </a>
+                            <a href="{{ route('manage-user') }}"
+                               class="flex items-center gap-2 px-4 py-3 text-sm text-[#1F2937] hover:bg-[#14B8A6]/10 transition-all duration-150">
+                                <x-user-manage-icon width="16px" height="16px" color="#14B8A6"/>
+                                Painel de Users
                             </a>
                         @endif
 

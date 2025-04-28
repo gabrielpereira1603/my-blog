@@ -20,7 +20,7 @@ $login = function () {
     $role = auth()->user()->role;
 
     if ($role === 'administrator') {
-        $this->redirectIntended(default: route('home.my_account', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('home.administrator', absolute: false), navigate: true);
     } else {
         $this->redirectIntended(default: route('home.my_account', absolute: false), navigate: true);
     }

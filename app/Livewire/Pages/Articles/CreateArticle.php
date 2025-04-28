@@ -4,10 +4,13 @@ namespace App\Livewire\Pages\Articles;
 
 use App\Livewire\Forms\Article\CreateArticleForm;
 use App\Models\Article;
+use App\Models\Category;
+use App\Service\Google\GenerativeLanguage\GenerativeLanguageService;
 use App\Trait\Article\HandlesCategoriesAndDevelopersTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -17,9 +20,44 @@ class CreateArticle extends Component
     use HandlesCategoriesAndDevelopersTrait;
 
     public CreateArticleForm $form;
+
+    protected GenerativeLanguageService $generativeLanguageService;
+
+    public function __construct()
+    {
+        $this->generativeLanguageService = new GenerativeLanguageService();
+
+    }
+
     public function mount()
+
     {
         $this->form->published_at = now()->format('Y-m-d');
+    }
+
+    #[On('article-generated')]
+    public function fillGeneratedArticle($data)
+    {
+        $this->form->title = $data['title'];
+        $this->form->content = $data['content'];
+
+        $categories = explode(', ', $data['categories']);
+
+        $categoryIds = Category::whereIn('name', $categories)
+            ->pluck('id')
+            ->toArray();
+
+        $this->form->categories = $categoryIds;
+
+        $this->dispatch('stop-loading');
+    }
+
+
+
+
+    public function openGenerateArticleAIModal()
+    {
+        $this->dispatch('open-modal', 'generate-article-ai-modal');
     }
 
     public function save()
@@ -55,7 +93,6 @@ class CreateArticle extends Component
             $this->dispatch('error', title: $e->getMessage());
         }
     }
-
 
     public function render()
     {

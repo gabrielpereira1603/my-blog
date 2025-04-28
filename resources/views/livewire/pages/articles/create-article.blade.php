@@ -1,21 +1,34 @@
 <div class="max-w-4xl mx-auto px-4 py-10">
-    <h1 class="text-2xl font-bold text-[#1F2937] mb-8">Criar novo artigo</h1>
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-2xl font-bold text-[#1F2937]">Criar novo artigo</h1>
+        <x-primary-button wire:click="openGenerateArticleAIModal" class="flex items-center gap-2">
+            <x-artificial-intelligence-icon width="20px" height="20px" color="currentColor" />
+            Gerar Artigo com IA
+        </x-primary-button>
+        <livewire:components.modals.articles.generate-article-a-i-modal/>
+    </div>
 
     <form wire:submit.prevent="save" class="space-y-6">
         {{-- Título --}}
         <div>
             <label class="block mb-2 text-sm font-medium text-[#1F2937]">Título</label>
-            <input type="text" wire:model.live="form.title"
+            <div wire:loading.class="hidden" wire:target="fillGeneratedArticle">
+                <input type="text" wire:model.live="form.title"
                    placeholder="Ex: Como escolher a paleta ideal para seu projeto"
                    class="w-full px-4 py-2 border border-[#14B8A6] rounded-xl shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-[#14B8A6] focus:outline-none">
+            </div>
+            <div wire:loading wire:target="fillGeneratedArticle" class="w-full h-12 bg-gray-300 rounded-lg animate-pulse"></div>
         </div>
 
         {{-- Conteúdo --}}
         <div>
             <label class="block mb-2 text-sm font-medium text-[#1F2937]">Conteúdo</label>
-            <textarea wire:model.live="form.content" rows="6"
-                      placeholder="Digite o conteúdo do artigo aqui..."
-                      class="w-full px-4 py-2 border border-[#14B8A6] rounded-xl shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-[#14B8A6] focus:outline-none resize-none"></textarea>
+            <div wire:loading.class="hidden" wire:target="fillGeneratedArticle">
+                <textarea wire:model.live="form.content" rows="6"
+                  placeholder="Digite o conteúdo do artigo aqui..."
+                  class="w-full px-4 py-2 border border-[#14B8A6] rounded-xl shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-[#14B8A6] focus:outline-none resize-none"></textarea>
+            </div>
+            <div wire:loading wire:target="fillGeneratedArticle" class="w-full h-40 bg-gray-300 rounded-lg animate-pulse"></div>
         </div>
 
         {{-- Imagem de capa --}}
@@ -49,7 +62,7 @@
                 @foreach($categories as $category)
                     <label class="inline-flex items-center px-3 py-2 bg-white border-2 border-[#14B8A6] rounded-xl cursor-pointer shadow-sm hover:bg-[#14B8A6]/10 transition">
                         <input type="checkbox"
-                               wire:model.live="selectedCategories"
+                               wire:model.live="form.categories"
                                value="{{ $category->id }}"
                                class="form-checkbox text-[#14B8A6] rounded focus:ring-0 focus:ring-offset-0 mr-2">
                         <span class="text-sm text-[#1F2937]">{{ $category->name }}</span>
@@ -96,6 +109,7 @@
             </button>
         </div>
     </form>
+
     @script
     <script>
         $wire.on('success', (event) => {
